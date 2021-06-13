@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        header{
+            color:slategrey;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 40px;
+            margin-left:45%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Room URL
+    </header>
+    <form action="{%url 'display_room'%}" method="POST">
+        {%csrf_token%}
+        <label for="url">
+            <input type="text" name="url" id="">
+            <input type="text" value={{room_name}} name="room_name">
+            <input type="text" value={{room_password}} name="room_password">
+        </label>
+        <input type="submit" value="Join Room">
+    </form>
+</body>
+</html>

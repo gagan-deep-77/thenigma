@@ -1,0 +1,95 @@
+
+
+{% load vote_count %}
+{%load get_id%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #option{
+            display: inline-block;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 2rem
+        }
+        span{
+            font-size: 2rem;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+        }
+        .container{
+            margin-left:20%;
+            margin-top:4%;
+        }
+        #question{
+            font-size:2.2rem;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        a{
+            text-decoration: none;
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {%for vote,option,question in zipped_list%}
+            <h1 id="question">{{question}}</h1>
+            {%for sub_option in option%}
+            <a href="#">{{sub_option}} &nbsp; &nbsp; </a>  
+            
+            {%get_id sub_option question as option_id%}
+            
+            <span>
+
+                <button type="button" onclick="vote_option('{%get_id sub_option question%}')">Vote</button>
+                {% vote_count sub_option question %}
+                <br>
+                <br>
+            {%endfor%}
+            <br>
+            <br>
+        {%endfor%}
+
+                <!-- .then((_res) => {
+                window.location.href = "/room_url";
+                }) -->
+
+    </div>
+    <script>
+        function vote_option(id){
+            data = JSON.stringify({
+                id:id
+            })
+            let csrftoken = getCookie('csrftoken');
+            fetch("/vote_option", {
+                method: "POST",
+                body: data,
+                headers: {"Accept":"application/json, text/plain, */*", "Content-Type": "application/json","X-CSRFToken": csrftoken}
+            })
+
+            location.reload()
+        }
+
+        function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+    </script>
+</body>
+</html>
